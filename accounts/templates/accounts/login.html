@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} — MedDiag AI</title>
+    <link rel="stylesheet" href="{% static 'diagnosis/css/styles.css' %}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="glass-card auth-card animate-slide-up">
+            <div class="auth-logo">
+                <div class="logo-icon">🧬</div>
+                <div class="logo-text" style="font-size: 1.4rem;">MedDiag AI</div>
+            </div>
+
+            <h2 class="auth-title">Welcome Back</h2>
+            <p class="auth-subtitle">Login to access your diagnostic tools</p>
+
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label class="form-label" for="login-username">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                    <div class="field-errors">
+                        {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                    <div class="field-errors">
+                        {% for error in form.password.errors %}<li>{{ error }}</li>{% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-full" style="margin-top: 8px;">
+                    🔐 Login
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="{% url 'accounts:register' %}">Register here</a>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'diagnosis/js/app.js' %}"></script>
+</body>
+</html>

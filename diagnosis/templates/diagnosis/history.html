@@ -1,0 +1,73 @@
+{% extends "diagnosis/base.html" %}
+
+{% block content %}
+<div class="history-header animate-slide-up">
+    <div>
+        <h2 style="font-size: 1.3rem; margin-bottom: 4px;">Diagnosis History</h2>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">{{ total_records }} total diagnosis record{{ total_records|pluralize }}</p>
+    </div>
+    <div class="history-filters">
+        <a href="{% url 'diagnosis:history' %}" class="filter-btn {% if not current_module %}active{% endif %}">All</a>
+        {% for module in modules %}
+        <a href="{% url 'diagnosis:history' %}?module={{ module.slug }}" 
+           class="filter-btn {% if current_module == module.slug %}active{% endif %}">
+            {{ module.icon }} {{ module.name }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% if page_obj.object_list %}
+<div class="history-cards">
+    {% for record in page_obj %}
+    <a href="{% url 'diagnosis:result' record.pk %}" class="glass-card history-item animate-slide-up">
+        {% if record.image %}
+        <img src="{{ record.image.url }}" alt="Diagnosis image" class="history-thumb">
+        {% endif %}
+        <div class="history-info">
+            <div class="history-module">{{ record.module.icon }} {{ record.module.name }}</div>
+            <div class="history-prediction">{{ record.predicted_class }}</div>
+            <div class="history-date">{{ record.created_at|date:"M d, Y \a\t H:i" }}</div>
+        </div>
+        <div class="history-confidence">
+            <div class="history-confidence-value result-status {{ record.confidence_color }}" style="display: inline-block; font-size: 1rem; padding: 4px 12px;">
+                {{ record.confidence }}%
+            </div>
+            <div class="history-confidence-label">Confidence</div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if page_obj.has_other_pages %}
+<div class="pagination">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}{% if current_module %}&module={{ current_module }}{% endif %}">← Prev</a>
+    {% endif %}
+    
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <span class="current">{{ num }}</span>
+        {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+        <a href="?page={{ num }}{% if current_module %}&module={{ current_module }}{% endif %}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+    
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}{% if current_module %}&module={{ current_module }}{% endif %}">Next →</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<div class="glass-card">
+    <div class="empty-state">
+        <div class="empty-state-icon">📋</div>
+        <h3>No Diagnoses Yet</h3>
+        <p>Upload a medical image to get started with your first AI-powered diagnosis.</p>
+        <a href="{% url 'diagnosis:dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

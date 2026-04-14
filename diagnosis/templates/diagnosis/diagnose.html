@@ -1,0 +1,84 @@
+{% extends "diagnosis/base.html" %}
+
+{% block content %}
+<div class="diagnose-layout">
+    <!-- Module Info -->
+    <div class="glass-card module-info-card animate-slide-up">
+        <div class="module-info-icon">{{ module.icon }}</div>
+        <h2 class="module-info-title">{{ module.name }}</h2>
+        <p class="module-info-desc">{{ module.description }}</p>
+        
+        <ul class="info-list">
+            <li>
+                <span class="info-icon">📐</span>
+                Image Size: {{ module.image_width }}×{{ module.image_height }} pixels
+            </li>
+            <li>
+                <span class="info-icon">🏷️</span>
+                Classes: {{ module.num_classes }}
+            </li>
+            <li>
+                <span class="info-icon">🧠</span>
+                Model: EfficientNetB0 (Transfer Learning)
+            </li>
+            <li>
+                <span class="info-icon">⚡</span>
+                Analysis time: &lt; 5 seconds
+            </li>
+        </ul>
+
+        <div style="margin-top: 20px;">
+            <h4 style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Detectable Classes</h4>
+            <div class="module-classes">
+                {% for cls in module.classes %}
+                <span class="class-tag">{{ cls }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Card -->
+    <div class="glass-card upload-card animate-slide-up animate-slide-up-delay-1">
+        <h3 class="upload-title">📤 Upload Medical Image</h3>
+
+        <form method="post" enctype="multipart/form-data" id="diagnosis-form">
+            {% csrf_token %}
+            
+            <!-- Drop Zone -->
+            <div class="drop-zone" id="drop-zone">
+                <div class="drop-zone-icon">🖼️</div>
+                <p class="drop-zone-text">Drag & drop your image here</p>
+                <p class="drop-zone-hint">or click to browse • JPEG, PNG • Max 10MB</p>
+                <input type="file" name="image" accept="image/*" id="image-upload-input" class="file-input" required>
+            </div>
+
+            <!-- Image Preview -->
+            <div class="image-preview-container" id="image-preview-container">
+                <img src="" alt="Preview" class="image-preview" id="image-preview">
+                <div class="preview-info">
+                    <span><span id="preview-filename"></span> • <span id="preview-filesize"></span></span>
+                    <button type="button" class="remove-preview" id="remove-preview">✕ Remove</button>
+                </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="form-group">
+                <label class="form-label" for="notes-input">Notes (optional)</label>
+                <textarea name="notes" id="notes-input" class="form-textarea" rows="3" placeholder="Add any relevant clinical notes..."></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary btn-lg btn-full" id="submit-btn" disabled>
+                🔬 Analyze Image
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Analyzing your image...</div>
+    <div class="loading-subtext">Running deep learning inference • This may take a few seconds</div>
+</div>
+{% endblock %}

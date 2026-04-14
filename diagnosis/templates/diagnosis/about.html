@@ -1,0 +1,115 @@
+{% extends "diagnosis/base.html" %}
+
+{% block content %}
+<div class="about-hero animate-slide-up">
+    <h1>MedDiag AI</h1>
+    <p>An AI-powered medical image diagnosis platform leveraging deep learning (CNN) models with transfer learning to analyze medical images and provide instant diagnostic predictions.</p>
+</div>
+
+<!-- Features Grid -->
+<div class="about-grid">
+    <div class="glass-card about-card animate-slide-up animate-slide-up-delay-1">
+        <div class="about-card-icon">🧠</div>
+        <h3>Deep Learning Models</h3>
+        <p>Powered by EfficientNetB0 Convolutional Neural Networks with transfer learning, trained on medical imaging datasets for accurate classification.</p>
+    </div>
+    <div class="glass-card about-card animate-slide-up animate-slide-up-delay-2">
+        <div class="about-card-icon">⚡</div>
+        <h3>Instant Analysis</h3>
+        <p>Upload a medical image and receive diagnostic predictions within seconds. Our optimized inference pipeline ensures fast, responsive results.</p>
+    </div>
+    <div class="glass-card about-card animate-slide-up animate-slide-up-delay-3">
+        <div class="about-card-icon">🔒</div>
+        <h3>Secure & Private</h3>
+        <p>Your medical images are processed securely. User authentication ensures only you can access your diagnosis history and records.</p>
+    </div>
+    <div class="glass-card about-card animate-slide-up animate-slide-up-delay-4">
+        <div class="about-card-icon">📊</div>
+        <h3>Detailed Results</h3>
+        <p>Get comprehensive results with probability distributions across all diagnostic classes, confidence scores, and visual analysis breakdowns.</p>
+    </div>
+</div>
+
+<!-- Available Modules -->
+<div class="section-header" style="margin-top: 20px;">
+    <h2 class="section-title">Available Diagnostic Modules</h2>
+</div>
+
+<div class="module-grid" style="margin-bottom: 32px;">
+    {% for module in modules %}
+    <div class="glass-card module-card animate-slide-up">
+        <div class="module-card-content">
+            <span class="module-icon">{{ module.icon }}</span>
+            <h3 class="module-name">{{ module.name }}</h3>
+            <p class="module-desc">{{ module.description }}</p>
+            <div class="module-classes">
+                {% for cls in module.classes %}
+                <span class="class-tag">{{ cls }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Tech Stack -->
+<div class="section-header">
+    <h2 class="section-title">Technology Stack</h2>
+</div>
+
+<div class="glass-card about-card animate-slide-up" style="margin-bottom: 32px;">
+    <div class="tech-stack">
+        <div class="tech-item">
+            <span class="tech-icon">🐍</span>
+            Python 3.10+
+        </div>
+        <div class="tech-item">
+            <span class="tech-icon">🎯</span>
+            Django 5.x
+        </div>
+        <div class="tech-item">
+            <span class="tech-icon">🧠</span>
+            TensorFlow 2.x
+        </div>
+        <div class="tech-item">
+            <span class="tech-icon">🔬</span>
+            Keras
+        </div>
+        <div class="tech-item">
+            <span class="tech-icon">🖼️</span>
+            Pillow
+        </div>
+        <div class="tech-item">
+            <span class="tech-icon">📐</span>
+            NumPy
+        </div>
+        <div class="tech-item">
+            <span class="tech-icon">💾</span>
+            SQLite
+        </div>
+        <div class="tech-item">
+            <span class="tech-icon">🎨</span>
+            CSS3
+        </div>
+    </div>
+</div>
+
+<!-- Disclaimer -->
+<div class="glass-card disclaimer-card animate-slide-up">
+    <h3>⚠️ Medical Disclaimer</h3>
+    <p>
+        This application is designed for <strong>educational and demonstration purposes only</strong>. 
+        The AI models used in this platform are not certified medical devices and should 
+        <strong>never be used as a substitute</strong> for professional medical diagnosis, treatment, or advice.
+    </p>
+    <p style="margin-top: 12px;">
+        Always seek the advice of a qualified healthcare professional with any questions regarding 
+        a medical condition. Never disregard professional medical advice or delay seeking it because 
+        of predictions provided by this application.
+    </p>
+    <p style="margin-top: 12px;">
+        The developers of this application assume no liability for any decisions made based on 
+        the outputs of the AI models contained herein.
+    </p>
+</div>
+{% endblock %}
